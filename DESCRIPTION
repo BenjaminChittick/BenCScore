@@ -1,0 +1,13 @@
+Package: BenCScore
+Title: Methods For Analysis of High-Throughput Screens
+Version: 0.0.0.9000
+Authors@R: person("Benjamin", "Chittick", 
+    email = "b.chittick@gmail.com", role = c("aut", "cre"))
+Description: This is a collection of methods for visualizing and selecting hits
+    from high-throughput screens.
+Depends: R (>= 3.1.1), coda (>= 0.13), data.table, ggplot2, RColorBrewer, reshape2, rjags, runjags
+Imports: snow
+License: What license is it under? 
+LazyData: true
+SystemRequirements: JAGS (>= 3.0.0) (see
+        http://mcmc-jags.sourceforge.net)
