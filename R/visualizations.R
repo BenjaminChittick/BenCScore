@@ -166,7 +166,7 @@ logisticFit <- function(x, top, bottom, IC50, hillslope){
   return(y.hat)
 }
 
-#' plotCurves
+#' plotCurve
 #' 
 #' Plot fitted binding curves
 #' 
@@ -178,7 +178,7 @@ logisticFit <- function(x, top, bottom, IC50, hillslope){
 #' data(mdmx)
 #' wellHeatMap(mdmx)
 
-plotCurves <- function(compound){
+plotCurve <- function(screen){
   
   IC50 <- compound$IC50[1]
   Hillslope <- compound$Hillslope[1]
@@ -202,4 +202,35 @@ plotCurves <- function(compound){
           title=element_text(size=10))
   
   print(p)
+}
+
+#' screenPlot
+#' 
+#' Plot fitted binding curves for a concentration-response screen
+#' 
+#' @param screen data.frame row with Compound_ID, Value, and Concentration.
+#' @export
+#' @examples
+#' Load screen
+#' data(mdmx)
+#' screenPlot(confirmation)
+
+screenPlot <- function(screen){
+ 
+  confirmation <- screen[screen$Run_Intent == 'CONFIRMATION_IN_DOSE', ]
+  confirmation <- screenFit(confirmation)
+  
+  cpd <- confirmation[confirmation$Well_Type == 'compound', ]
+  cpd <- cpd[cpd$Compound_ID != '', ]
+  
+  x.min <- min(cpd$Concentration)
+  x.max <- max(cpd$Concentration)
+  y.min <- min(cpd$Value)
+  y.max <- max(cpd$Value)
+  
+  cpd <- cpd[order(cpd$IC50), ]
+  id <- unique(cpd$Compound_ID)
+  cpd <- split(cpd, cpd$Compound_ID)
+  
+  curves <- lapply(id, function(x) plotCurves(cpd[[x]], x.min, x.max, y.min, y.max))
 }
